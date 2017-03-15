@@ -26,11 +26,12 @@
     region: "{{ ec2_region }}"
     exact_count: "{{ ec2_exact_count }}"
     count_tag:
-      name: "{{ ec2_name_prefix }}-{{ environment | default(omit) }}-{{ item.role }}-{{ item.name }}"
+      name: "{{ ec2_name_prefix }}-{{ item.app_name | default(omit) }}-{{ item.role }}-{{ item.name }}"
     instance_tags:
-      name: "{{ ec2_name_prefix }}-{{ environment | default(omit) }}-{{ item.role }}-{{ item.name }}"
+      name: "{{ ec2_name_prefix }}-{{ item.app_name | default(omit) }}-{{ item.role }}-{{ item.name }}"
       environment: "{{ environment | default(omit) }}"
       role: "{{ item.role }}"
+      app: "{{ item.app_name }}
     wait: "{{ ec2_wait }}"
     vpc_subnet_id: "{{ ec2_vpc_subnet_id | default(omit) }}"
     volumes:
