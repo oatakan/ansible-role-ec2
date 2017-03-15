@@ -31,7 +31,7 @@
       name: "{{ ec2_name_prefix }}-{{ item.app_name | default(omit) }}-{{ item.role }}-{{ item.name }}"
       environment: "{{ environment | default(omit) }}"
       role: "{{ item.role }}"
-      app: "{{ item.app_name }}
+      app: "{{ item.app_name }}"
     wait: "{{ ec2_wait }}"
     vpc_subnet_id: "{{ ec2_vpc_subnet_id | default(omit) }}"
     volumes:
