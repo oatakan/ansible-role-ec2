@@ -26,11 +26,11 @@
     region: "{{ ec2_region }}"
     exact_count: "{{ ec2_exact_count }}"
     count_tag:
-      Name: "{{ ec2_name_prefix }}-{{ environment }}-{{ item.role }}-{{ item.name }}"
+      name: "{{ ec2_name_prefix }}-{{ environment | default(omit) }}-{{ item.role }}-{{ item.name }}"
     instance_tags:
-      Name: "{{ ec2_name_prefix }}-{{ environment }}-{{ item.role }}-{{ item.name }}"
-      Environment: "{{ environment }}"
-      Role: "{{ item.role }}"
+      name: "{{ ec2_name_prefix }}-{{ environment | default(omit) }}-{{ item.role }}-{{ item.name }}"
+      environment: "{{ environment | default(omit) }}"
+      role: "{{ item.role }}"
     wait: "{{ ec2_wait }}"
     vpc_subnet_id: "{{ ec2_vpc_subnet_id | default(omit) }}"
     volumes:
@@ -60,7 +60,7 @@
 - name: Wait for instances to finish initializing
   pause:
     seconds: 90
-  when: instances | changed
+  when: instances | changed and ec2_exact_count >= 1
   tags:
     - always
     - provision
@@ -68,7 +68,7 @@
 - name: Waiting for servers to come online
   wait_for: host="{{ item.tagged_instances[0].public_ip }}" port="{{ ssh_port }}" search_regex=OpenSSH
   with_items: "{{ instances.results }}"
-  when: instances | changed
+  when: instances | changed and ec2_exact_count >= 1
   tags:
     - always
     - provision

@@ -8,5 +8,5 @@ ec2_vpc_subnet_id: default
 ec2_key_name: default
 ec2_exact_count: 1
 ec2_wait: yes
-environment: test
+ssh_port: 22
 
