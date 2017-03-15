@@ -29,6 +29,8 @@
       Name: "{{ ec2_name_prefix }}-{{ environment }}-{{ item.role }}-{{ item.name }}"
     instance_tags:
       Name: "{{ ec2_name_prefix }}-{{ environment }}-{{ item.role }}-{{ item.name }}"
+      Environment: "{{ environment }}"
+      Role: "{{ item.role }}"
     wait: "{{ ec2_wait }}"
     vpc_subnet_id: "{{ ec2_vpc_subnet_id | default(omit) }}"
     volumes:
@@ -39,8 +41,6 @@
   with_items:
     - "{{ nodes }}"
   register: ec2_jobs
-  async: 7200
-  poll: 0
   tags:
     - always
     - provision
