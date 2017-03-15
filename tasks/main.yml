@@ -1,4 +1,8 @@
 ---
+- debug: msg="{{ lookup('env', 'AWS_ACCESS_KEY') }}"
+
+- debug: msg="{{ lookup('env', 'AWS_SECRET_KEY') }}"
+
 - name: Create EC2 security group
   ec2_group:
     aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
