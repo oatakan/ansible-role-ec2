@@ -1,26 +1,20 @@
 ---
-- debug: msg="{{ lookup('env', 'AWS_ACCESS_KEY') }}"
-
-- debug: msg="{{ lookup('env', 'AWS_SECRET_KEY') }}"
-
-- name: Create EC2 security group
-  ec2_group:
-    aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
-    aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
-    name: insecure_all
-    description: all ports open
-    region: "{{ ec2_region }}"
-    vpc_id: "{{ ec2_vpc_id }}"
-    rules:
-      - proto: all
-        cidr_ip: 0.0.0.0/0
-    rules_egress:
-      - proto: all
-        cidr_ip: 0.0.0.0/0
-  when: ec2_exact_count >= 1
-  tags:
-    - always
-    - provision
+#- name: Create EC2 security group
+#  ec2_group:
+#    name: insecure_all
+#    description: all ports open
+#    region: "{{ ec2_region }}"
+#    vpc_id: "{{ ec2_vpc_id }}"
+#    rules:
+#      - proto: all
+#        cidr_ip: 0.0.0.0/0
+#    rules_egress:
+#      - proto: all
+#        cidr_ip: 0.0.0.0/0
+#  when: ec2_exact_count >= 1
+#  tags:
+#    - always
+#    - provision
 
 - name: Create or destroy EC2 instances
   ec2:
