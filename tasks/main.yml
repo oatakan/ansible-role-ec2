@@ -59,7 +59,7 @@
 
 - name: Wait for instances to finish initializing
   pause:
-    seconds: 90
+    seconds: 30
   when: instances | changed and ec2_exact_count >= 1
   tags:
     - always
