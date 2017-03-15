@@ -1,20 +1,20 @@
 ---
-#- name: Create EC2 security group
-#  ec2_group:
-#    name: insecure_all
-#    description: all ports open
-#    region: "{{ ec2_region }}"
-#    vpc_id: "{{ ec2_vpc_id }}"
-#    rules:
-#      - proto: all
-#        cidr_ip: 0.0.0.0/0
-#    rules_egress:
-#      - proto: all
-#        cidr_ip: 0.0.0.0/0
-#  when: ec2_exact_count >= 1
-#  tags:
-#    - always
-#    - provision
+- name: Create EC2 security group
+  ec2_group:
+    name: "{{ ec2_security_group }}"
+    description: all ports open
+    region: "{{ ec2_region }}"
+    vpc_id: "{{ ec2_vpc_id }}"
+    rules:
+      - proto: all
+        cidr_ip: 0.0.0.0/0
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0
+  when: ec2_exact_count >= 1
+  tags:
+    - always
+    - provision
 
 - name: Create or destroy EC2 instances
   ec2:
@@ -41,6 +41,8 @@
   with_items:
     - "{{ nodes }}"
   register: ec2_jobs
+  async: 7200
+  poll: 0
   tags:
     - always
     - provision

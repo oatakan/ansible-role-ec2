@@ -1,7 +1,7 @@
 ---
 # defaults file for ec2
 ec2_name_prefix: DEMO
-ec2_security_group: insecure_all_static
+ec2_security_group: insecure_all
 ec2_region: us-east-1
 ec2_vpc_id: default
 ec2_vpc_subnet_id: default
