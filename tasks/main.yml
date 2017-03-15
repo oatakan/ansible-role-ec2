@@ -1,6 +1,8 @@
 ---
 - name: Create EC2 security group
   ec2_group:
+    aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
+    aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
     name: insecure_all
     description: all ports open
     region: "{{ ec2_region }}"
