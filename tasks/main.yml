@@ -35,6 +35,7 @@
       user: "{{ item.username | default(omit) }}"
     wait: "{{ ec2_wait }}"
     vpc_subnet_id: "{{ ec2_vpc_subnet_id | default(omit) }}"
+    user_data: "{{ item.user_data | default(omit) }}"
     volumes: "{{ item.volumes }}"
   with_items:
     - "{{ nodes }}"
@@ -64,7 +65,7 @@
     - provision
 
 - name: Waiting for servers to come online
-  wait_for: host="{{ item.tagged_instances[0].public_ip }}" port="{{ ssh_port }}" search_regex=OpenSSH
+  wait_for: host="{{ item.tagged_instances[0].public_ip }}" port="{{ ansible_port }}" search_regex=OpenSSH
   with_items: "{{ instances.results }}"
   when: instances | changed and ec2_exact_count >= 1
   tags:
