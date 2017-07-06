@@ -36,7 +36,7 @@
     wait: "{{ ec2_wait }}"
     vpc_subnet_id: "{{ ec2_vpc_subnet_id | default(omit) }}"
     user_data: "{{ item.user_data | default(omit) }}"
-    volumes: "{{ item.volumes }}"
+    volumes: "{{ item.volumes | default(omit) }}"
   with_items:
     - "{{ nodes }}"
   register: ec2_jobs
