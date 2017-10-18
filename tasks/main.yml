@@ -32,6 +32,7 @@
       environment: "{{ environment | default(omit) }}"
       role: "{{ item.role }}"
       app: "{{ item.app_name }}"
+      pod: "{{ item.pod_name | default('') }}"
       user: "{{ item.username | default(omit) }}"
     wait: "{{ ec2_wait }}"
     vpc_subnet_id: "{{ ec2_vpc_subnet_id | default(omit) }}"
