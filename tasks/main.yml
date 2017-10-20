@@ -29,11 +29,11 @@
       name: "{{ ec2_name_prefix }}-{{ item.pod_name | default('') }}-{{ item.role }}-{{ item.name }}"
     instance_tags:
       name: "{{ ec2_name_prefix }}-{{ item.pod_name | default('') }}-{{ item.role }}-{{ item.name }}"
-      environment: "{{ environment | default(omit) }}"
+      environment: "{{ environment | default('') }}"
       role: "{{ item.role }}"
       app: "{{ item.app_name }}"
       pod: "{{ item.pod_name | default('') }}"
-      user: "{{ item.username | default(omit) }}"
+      user: "{{ item.username | default('') }}"
     wait: "{{ ec2_wait }}"
     vpc_subnet_id: "{{ ec2_vpc_subnet_id | default(omit) }}"
     user_data: "{{ item.user_data | default(omit) }}"
