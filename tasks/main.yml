@@ -57,17 +57,6 @@
     - always
     - provision
 
-#- name: Waiting for servers to come online
-#  wait_for:
-#    host: "{{ item.tagged_instances[0].public_ip }}"
-#    port: "{{ ansible_port }}"
-#    timeout: 300
-#  with_items: "{{ instances.results }}"
-#  when: instances | changed and ec2_exact_count >= 1
-#  tags:
-#    - always
-#    - provision
-
 - name: Waiting for servers to come online
   wait_for_connection:
   with_items: "{{ instances.results }}"
