@@ -77,16 +77,10 @@
     - always
     - provision
 
-- name: Run setup module
-  setup:
-    gather_subset: min
+- name: Wait for connection
+  wait_for_connection:
   with_items: "{{ instances.results }}"
   delegate_to: "{{ item.tagged_instances[0].public_ip }}"
-  register: run_setup
-  until: run_setup|success
-  delay: 3
-  retries: 10
-  ignore_errors: yes
   when: instances | changed and ec2_exact_count >= 1
   tags:
     - always
