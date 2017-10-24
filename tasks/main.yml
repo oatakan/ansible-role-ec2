@@ -57,15 +57,6 @@
     - always
     - provision
 
-#- name: Waiting for servers to come online
-#  wait_for_connection:
-#  with_items: "{{ instances.results }}"
-#  delegate_to: "{{ item.tagged_instances[0].public_ip }}"
-#  when: instances | changed and ec2_exact_count >= 1 and ansible_version.full | version_compare('2.4', '>=')
-#  tags:
-#    - always
-#    - provision
-
 - name: Waiting for servers to come online
   wait_for:
     host: "{{ item.tagged_instances[0].public_ip }}"
@@ -73,28 +64,6 @@
     timeout: 300
   with_items: "{{ instances.results }}"
   when: instances | changed and ec2_exact_count >= 1
-  tags:
-    - always
-    - provision
-
-- name: Wait for connection
-  wait_for_connection:
-  with_items: "{{ instances.results }}"
-  delegate_to: "{{ item.tagged_instances[0].public_ip }}"
-  when: instances | changed and ec2_exact_count >= 1
-  register: wait_for_connection_requests
-  async: 7200
-  poll: 0
-  tags:
-    - always
-    - provision
-
-- name: Wait for wait for connection to complete
-  async_status: jid="{{ item.ansible_job_id }}"
-  register: wait_for_connection_result
-  until: wait_for_connection_result.finished
-  retries: 300
-  with_items: "{{ wait_for_connection_requests.results }}"
   tags:
     - always
     - provision
