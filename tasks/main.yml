@@ -79,7 +79,7 @@
 
 - name: Run setup module
   setup:
-    gather_subset: !all,!min
+    gather_subset: min
   with_items: "{{ instances.results }}"
   delegate_to: "{{ item.tagged_instances[0].public_ip }}"
   register: run_setup
