@@ -86,6 +86,7 @@
   until: run_setup|success
   delay: 3
   retries: 10
+  ignore_errors: yes
   when: instances | changed and ec2_exact_count >= 1
   tags:
     - always
