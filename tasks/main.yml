@@ -64,6 +64,7 @@
     timeout: 300
   with_items: "{{ instances.results }}"
   when: instances | changed and ec2_exact_count >= 1
+  ignore_errors: yes
   tags:
     - always
     - provision
