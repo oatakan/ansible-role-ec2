@@ -51,7 +51,7 @@
   async_status: jid="{{ item.ansible_job_id }}"
   register: instances
   until: instances.finished
-  retries: 300
+  retries: "{{ instance_wait_retry_limit }}"
   with_items: "{{ ec2_jobs.results }}"
   tags:
     - always
@@ -61,7 +61,7 @@
   wait_for:
     host: "{{ item.tagged_instances[0].public_ip }}"
     port: "{{ ansible_port }}"
-    timeout: 300
+    timeout: "{{ instance_wait_connection_timeout }}"
   with_items: "{{ instances.results }}"
   when: instances | changed and ec2_exact_count >= 1
   ignore_errors: yes
