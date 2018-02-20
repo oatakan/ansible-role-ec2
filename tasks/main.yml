@@ -57,6 +57,10 @@
     - always
     - provision
 
+- debug:
+    var: item
+  with_items: "{{ instances.results }}"
+
 - name: Waiting for servers to come online
   wait_for:
     host: "{{ item.tagged_instances[0].public_ip }}"
