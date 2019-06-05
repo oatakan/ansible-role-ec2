@@ -19,7 +19,7 @@
     wait: "{{ ec2_wait }}"
     user_data: "{{ item.user_data | default(omit) }}"
     volumes: "{{ item.volumes | default(omit) }}"
-  loop:
+  with_items:
     - "{{ nodes }}"
   register: ec2_jobs
   async: 7200
