@@ -11,5 +11,5 @@ ec2_wait: yes
 ansible_port: 22
 instance_wait_retry_limit: 300
 instance_wait_connection_timeout: 300
-ec2_use_module: ec2
+ec2_use_module: ec2_instance
 
