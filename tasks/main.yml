@@ -28,6 +28,9 @@
     - always
     - provision
 
+- debug:
+    var: instances.results
+
 - name: Waiting for servers to come online
   wait_for:
     host: "{{ item.public_ip_address }}"
