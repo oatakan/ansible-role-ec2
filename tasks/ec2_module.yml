@@ -18,7 +18,7 @@
       pod: "{{ item.pod_name | default('') }}"
       user: "{{ current_user | default('') }}"
       Contact: "{{ current_user  | default('') }}"
-      AlwaysUp: "{{ item.always_up | default('NO') }}"
+      AlwaysUp: "{{ item.always_up | default('false') }}"
       DeleteBy: "{{ item.delete_by | default(delete_by_date) }}"
     wait: "{{ ec2_wait }}"
     vpc_subnet_id: "{{ ec2_vpc_subnet_id | default(omit) }}"
