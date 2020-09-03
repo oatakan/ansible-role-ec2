@@ -9,6 +9,11 @@
   set_fact:
     current_user: '{{ whoami.arn.split("/")[-1] }}'
 
-- name: delete by date
-  set_fact:
-    delete_by_date: "{{ 'NEVER' if never_delete else lookup('pipe','date -v +{{ days_to_keep }}d +%m.%d.%Y') }}"
+- block:
+    - name: delete by date (GNU)
+      set_fact:
+        delete_by_date: "{{ 'NEVER' if never_delete else lookup('pipe','date -d \"+{{ days_to_keep }} Days\" +%m.%d.%Y') }}"
+  rescue:
+    - name: delete by date (other)
+      set_fact:
+        delete_by_date: "{{ 'NEVER' if never_delete else lookup('pipe','date -v +{{ days_to_keep }}d +%m.%d.%Y') }}"
