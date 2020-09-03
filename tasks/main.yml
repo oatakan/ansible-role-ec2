@@ -1,4 +1,7 @@
 ---
+
+- include_tasks: preflight_check.yml
+
 - name: Create EC2 security group
   ec2_group:
     name: "{{ ec2_security_group }}"

@@ -1,0 +1,14 @@
+---
+
+- name: grab information about AWS user
+  aws_caller_info:
+    region: "{{ ec2_region }}"
+  register: whoami
+
+- name: save username of AWS user
+  set_fact:
+    current_user: '{{ whoami.arn.split("/")[-1] }}'
+
+- name: delete by date
+  set_fact:
+    delete_by_date: "{{ 'NEVER' if never_delete else lookup('pipe','date -v +{{ days_to_keep }}d +%m.%d.%Y') }}"
