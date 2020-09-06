@@ -1,4 +1,7 @@
 ---
+
+role_action: provision
+
 # defaults file for ec2
 ec2_name_prefix: DEMO
 ec2_security_group: insecure_all

@@ -1,0 +1,18 @@
+---
+
+- name: get ec2 instance information
+  ec2_instance_info:
+    region: "{{ ec2_region }}"
+    instance_ids: "{{ ansible_play_hosts | intersect(nodes | map(attribute='name') | list) | map('extract',hostvars,'ec2_id') | list }}"
+    filters:
+      vpc-id: "{{ ec2_vpc_id }}"
+  register: ec2_instances
+  when:
+    - nodes is defined
+
+- name: terminate instances
+  ec2:
+    region: "{{ ec2_region }}"
+    state: "absent"
+    instance_ids: "{{ ec2_instances.instances | map(attribute='instance_id') | list }}"
+  when: ec2_instances.instances | map(attribute='instance_id') | list | length > 0
