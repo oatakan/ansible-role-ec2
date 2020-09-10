@@ -9,10 +9,10 @@
   when:
     - nodes is defined
 
-- name: terminate instances
-  ec2:
-    region: "{{ ec2_region }}"
-    state: "absent"
-    #instance_ids: "{{ ansible_play_hosts | intersect(nodes | map(attribute='name') | list) | map('extract',hostvars,'ec2_id') | list }}"
-    instance_ids: "{{ ansible_play_hosts | intersect(ec2_instances.instances | map(attribute='instance_id')) | list }}"
-  when: ec2_instances.instances | map(attribute='instance_id') | list | length > 0
+#- name: terminate instances
+#  ec2:
+#    region: "{{ ec2_region }}"
+#    state: "absent"
+#    #instance_ids: "{{ ansible_play_hosts | intersect(nodes | map(attribute='name') | list) | map('extract',hostvars,'ec2_id') | list }}"
+#    instance_ids: "{{ ansible_play_hosts | intersect(ec2_instances.instances | map(attribute='instance_id')) | list }}"
+#  when: ec2_instances.instances | map(attribute='instance_id') | list | length > 0
