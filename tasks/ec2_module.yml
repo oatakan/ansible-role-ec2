@@ -8,6 +8,7 @@
     image: "{{ item.image }}"
     region: "{{ ec2_region }}"
     exact_count: "{{ ec2_exact_count }}"
+    source_dest_check: "{{ item.network_source_dest_check | default(omit) }}"
     count_tag:
       name: "{{ ec2_name_prefix }}-{{ item.pod_name | default('') }}-{{ item.role }}-{{ item.name }}"
     instance_tags:
