@@ -24,17 +24,30 @@
   register: instances
   until: instances.finished
   retries: "{{ instance_wait_retry_limit }}"
-  with_items: "{{ ec2_jobs.results }}"
+  loop: "{{ ec2_jobs.results }}"
   tags:
     - always
     - provision
+
+- name: Add any secondary private ip addresses
+  ec2_eni:
+    eni_id: "{{ item.instances[0].network_interfaces[0].network_interface_id }}"
+    region: "{{ ec2_region }}"
+    state: present
+    secondary_private_ip_addresses: "{{ (item.item.item.networks | map(attribute='ip') | list)[1:] }}"
+  loop: "{{ instances.results }}"
+  when:
+    - instances is changed
+    - ec2_exact_count >= 1
+    - item.item.item.networks is defined
+    - item.item.item.networks | length > 1
 
 - name: Waiting for servers to come online
   wait_for:
     host: "{{ item.instances[0].public_ip_address }}"
     port: "{{ ansible_port }}"
     timeout: "{{ instance_wait_connection_timeout }}"
-  with_items: "{{ instances.results }}"
+  loop: "{{ instances.results }}"
   when:
     - instances is changed
     - ec2_exact_count >= 1

@@ -10,8 +10,8 @@
     network:
       assign_public_ip: true
       source_dest_check: "{{ item.network_source_dest_check | default(omit) }}"
-      private_ip_address: "{{ (item.networks | map(attribute='ip') | join('')) if (item.networks is defined and (item.networks | length == 1)) else omit }}"
-      private_ip_addresses: "{{ (item.networks | map(attribute='ip') | list) if (item.networks is defined and (item.networks | length > 1)) else omit }}"
+      private_ip_address: "{{ (item.networks | map(attribute='ip') | list)[0] if (item.networks is defined and (item.networks | length > 0)) else omit }}"
+      private_ip_addresses: "{{ (item.networks | map(attribute='ip') | list)[1:] if (item.networks is defined and (item.networks | length > 1)) else omit }}"
       subnet_id: "{{ ec2_vpc_subnet_id | default(omit) }}"
     image_id: "{{ item.image }}"
     tags:
@@ -26,8 +26,7 @@
     wait: "{{ ec2_wait }}"
     user_data: "{{ item.user_data | default(omit) }}"
     volumes: "{{ item.volumes | default(omit) }}"
-  with_items:
-    - "{{ nodes }}"
+  loop: "{{ nodes }}"
   register: ec2_jobs
   async: 7200
   poll: 0

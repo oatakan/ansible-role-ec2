@@ -25,8 +25,7 @@
     vpc_subnet_id: "{{ ec2_vpc_subnet_id | default(omit) }}"
     user_data: "{{ item.user_data | default(omit) }}"
     volumes: "{{ item.volumes | default(omit) }}"
-  with_items:
-    - "{{ nodes }}"
+  loop: "{{ nodes }}"
   register: ec2_jobs
   async: 7200
   poll: 0
