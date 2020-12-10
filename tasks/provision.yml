@@ -45,7 +45,7 @@
 - name: Waiting for servers to come online
   wait_for:
     host: "{{ item.instances[0].public_ip_address }}"
-    port: "{{ ansible_port }}"
+    port: "{{ item.item.item.ansible_port | default(ansible_port) }}"
     timeout: "{{ instance_wait_connection_timeout }}"
   loop: "{{ instances.results }}"
   when:
