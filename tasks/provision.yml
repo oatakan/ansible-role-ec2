@@ -20,7 +20,8 @@
 - include_tasks: "{{ ec2_use_module }}_module.yml"
 
 - name: Wait for instance creation to complete
-  async_status: jid="{{ item.ansible_job_id }}"
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
   register: instances
   until: instances.finished
   retries: "{{ instance_wait_retry_limit }}"
