@@ -13,6 +13,11 @@
   ec2:
     region: "{{ ec2_region }}"
     state: "absent"
-    instance_ids: "{{ ansible_play_hosts | intersect(nodes | map(attribute='name') | list) | map('extract',hostvars,'ec2_id') | list }}"
-    #instance_ids: "{{ ansible_play_hosts | intersect(ec2_instances.instances | map(attribute='instance_id')) | list }}"
-  when: ec2_instances.instances | map(attribute='instance_id') | list | length > 0
+    instance_ids: "{{ _instance_ids }}"
+  when:
+    - ec2_instances.instances | map(attribute='instance_id') | list | length > 0
+    - _instance_ids | length > 0
+  vars:
+    query: "[?contains(`{{ nodes_tag_names }}`, tags.Name)].instance_id"
+    _match_nodes: "{{ ec2_instances.instances | json_query(query) | list }}"
+    _instance_ids: "{{ (ansible_play_hosts | map('extract',hostvars,'ec2_id') | list) | intersect(_match_nodes) | list }}"

@@ -1,0 +1,7 @@
+---
+
+nodes_tag_names_str: |
+  {% for node in nodes %}
+  - "{{ ec2_name_prefix }}-{{ node.pod_name | default('') }}-{{ node.role }}-{{ node.name }}"
+  {% endfor %}
+nodes_tag_names: "{{ nodes_tag_names_str|from_yaml }}"
