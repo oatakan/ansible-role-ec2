@@ -7,6 +7,3 @@
     filters:
       vpc-id: "{{ ec2_vpc_id | default(omit) }}"
   register: subnet_info
-
-- debug:
-    msg: "{{ subnet_info }}"
