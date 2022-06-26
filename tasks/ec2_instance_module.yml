@@ -4,7 +4,7 @@
     name: "{{ ec2_name_prefix }}-{{ item.pod_name | default('') }}-{{ item.role }}-{{ item.name }}"
     key_name: "{{ ec2_key_name }}"
     region: "{{ ec2_region }}"
-#     vpc_subnet_id: "{{ ec2_vpc_subnet_id | default(omit) }}"
+    vpc_subnet_id: "{{ ec2_vpc_subnet_id | default(_vpc_subnet_id) | default(omit) }}"
     availability_zone: "{{ item.availability_zone | default(ec2_availability_zone) | default(omit) }}"
     instance_type: "{{ item.instance_type }}"
     security_group: "{{ ec2_security_group }}"
@@ -34,3 +34,6 @@
   tags:
     - always
     - provision
+  vars:
+    query: "@[?availability_zone==`{{ item.availability_zone | default(ec2_availability_zone) | default('') }}`]"
+    _vpc_subnet_id: "{{ subnet_info.subnets | json_query(query) | first }}"

@@ -1,5 +1,8 @@
 ---
 
+- include_tasks: check_subnet.yml
+  when: ec2_vpc_subnet_id is undefined
+
 - name: Create EC2 security group
   ec2_group:
     name: "{{ ec2_security_group }}"
