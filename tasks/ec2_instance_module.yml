@@ -5,6 +5,7 @@
     key_name: "{{ ec2_key_name }}"
     region: "{{ ec2_region }}"
     vpc_subnet_id: "{{ ec2_vpc_subnet_id | default(omit) }}"
+    availability_zone: "{{ item.availability_zone | default(ec2_availability_zone) | default(omit) }}"
     instance_type: "{{ item.instance_type }}"
     security_group: "{{ ec2_security_group }}"
     network:
