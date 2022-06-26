@@ -3,6 +3,10 @@
 - name: gather subnet information
   amazon.aws.ec2_vpc_subnet_info:
     region: "{{ ec2_region }}"
+    subnet_ids: "{{ ec2_vpc_subnet_id | default(omit) }}"
     filters:
       vpc-id: "{{ ec2_vpc_id | default(omit) }}"
   register: subnet_info
+
+- debug:
+    msg: "{{ subnet_info }}"

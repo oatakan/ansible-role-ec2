@@ -35,5 +35,6 @@
     - always
     - provision
   vars:
-    query: "@[?availability_zone==`{{ item.availability_zone | default(ec2_availability_zone) | default('') }}`]"
-    _vpc_subnet_id: "{{ subnet_info.subnets | json_query(query) | first }}"
+    _availability_zone: "{{ item.availability_zone | default(ec2_availability_zone) | default(ec2_region + 'a') }}"
+    _query: "@[?availability_zone==`{{ _availability_zone }}`]"
+    _vpc_subnet_id: "{{ subnet_info.subnets | json_query(_query) | first }}"
