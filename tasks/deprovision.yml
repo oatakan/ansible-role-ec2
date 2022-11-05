@@ -1,7 +1,7 @@
 ---
 
 - name: get ec2 instance information
-  ec2_instance_info:
+  amazon.aws.ec2_instance_info:
     region: "{{ ec2_region }}"
     filters:
       vpc-id: "{{ ec2_vpc_id }}"
@@ -10,7 +10,7 @@
     - nodes is defined
 
 - name: terminate instances
-  ec2:
+  amazon.aws.ec2_instance:
     region: "{{ ec2_region }}"
     state: "absent"
     instance_ids: "{{ _instance_ids }}"

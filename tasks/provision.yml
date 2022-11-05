@@ -3,7 +3,7 @@
 - include_tasks: check_subnet.yml
 
 - name: Create EC2 security group
-  ec2_group:
+  amazon.aws.ec2_group:
     name: "{{ ec2_security_group }}"
     description: all ports open
     region: "{{ ec2_region }}"
@@ -33,7 +33,7 @@
     - provision
 
 - name: Add any secondary private ip addresses
-  ec2_eni:
+  amazon.aws.ec2_eni:
     eni_id: "{{ item.instances[0].network_interfaces[0].network_interface_id }}"
     region: "{{ ec2_region }}"
     state: present

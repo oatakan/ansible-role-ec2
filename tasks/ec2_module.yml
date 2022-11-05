@@ -1,6 +1,6 @@
 ---
 - name: Create or destroy EC2 instances
-  ec2:
+  amazon.aws.ec2:
     assign_public_ip: yes
     key_name: "{{ ec2_key_name }}"
     group: "{{ ec2_security_group }}"
