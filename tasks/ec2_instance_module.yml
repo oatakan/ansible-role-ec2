@@ -23,6 +23,7 @@
       Contact: "{{ current_user  | default('') }}"
       AlwaysUp: "{{ item.always_up | default('false') }}"
       DeleteBy: "{{ item.delete_by | default(delete_by_date) }}"
+      ansible_port: "{{ item.ansible_port | default(ansible_port) }}"
     wait: "{{ ec2_wait }}"
     user_data: "{{ item.user_data | default(omit) }}"
     volumes: "{{ item.volumes | default(omit) }}"

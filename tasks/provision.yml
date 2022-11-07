@@ -45,17 +45,30 @@
     - item.item.item.networks is defined
     - item.item.item.networks | length > 1
 
-- name: Waiting for servers to come online
-  wait_for:
-    host: "{{ item.instances[0].public_ip_address }}"
-    port: "{{ item.item.item.ansible_port | default(ansible_port) }}"
-    timeout: "{{ instance_wait_connection_timeout }}"
-  loop: "{{ instances.results }}"
+- name: Waiting for public ip address to be available
+  amazon.aws.ec2_instance_info:
+    region: "{{ ec2_region }}"
+    instance_ids: "{{ instances.results | map(attribute='instance_ids') | list | flatten }}"
+  register: get_instances_info
+  until:
+    - get_instances_info.instances is defined
+    - instances.results|length == (get_instances_info.instances | selectattr('public_ip_address', 'defined') | list | length)
+  retries: "{{ instance_wait_retry_limit }}"
   when:
     - instances is changed
     - ec2_exact_count >= 1
-    - item.instances[0].public_ip_address is defined
-  ignore_errors: yes
+
+- name: Waiting for servers to come online
+  wait_for:
+    host: "{{ item.public_ip_address }}"
+    port: "{{ item.tags.ansible_port | default(ansible_port) }}"
+    timeout: "{{ instance_wait_connection_timeout }}"
+  loop: "{{ get_instances_info.instances }}"
+  when:
+    - instances is changed
+    - ec2_exact_count >= 1
+    - item.public_ip_address is defined
+  ignore_errors: true
   tags:
     - always
     - provision
