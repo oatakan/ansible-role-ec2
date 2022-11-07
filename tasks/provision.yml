@@ -54,6 +54,7 @@
   when:
     - instances is changed
     - ec2_exact_count >= 1
+    - item.instances[0].public_ip_address is defined
   ignore_errors: yes
   tags:
     - always
